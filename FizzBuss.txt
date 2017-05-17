@@ -30,7 +30,7 @@ namespace FizzBuzzWebForm.Controllers
             {
                 int inputnumer = 0;
                 inputnumer = int.Parse(number);
-                fizzbuzzdto = ExecFizzBuss(inputnumer);
+                fizzbuzzdto = ExecFizzBuzz(inputnumer);
             }
 
             return View(fizzbuzzdto);
@@ -40,7 +40,7 @@ namespace FizzBuzzWebForm.Controllers
         /// <param name="number">フィズバズで検証値</param>
         /// <return>FizzBuzz情報を返してくれる</return>
         /// </summary>
-        public FizzBuzzDto ExecFizzBuss(int number)
+        public FizzBuzzDto ExecFizzBuzz(int number)
         {
 
             //区切り文字
