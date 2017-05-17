@@ -1,0 +1,162 @@
+using System;
+
+using System.Web.Mvc;
+using FizzBuzzWebForm.Models;
+namespace FizzBuzzWebForm.Controllers
+{
+    public class FizzBuzzController : Controller
+    {
+        // GET: FizzBuzz
+        public ActionResult Index(String value)
+        {
+            //テストの入力項目ができていないための仮
+            value = Request.Params["value"];
+            String number = String.Empty;
+            if (String.IsNullOrEmpty(value))
+            {
+                number = "100";
+            }
+            else
+            {
+                number = value;
+            }
+
+            //区切り文字
+            char delimited = ',';
+            //フィズバズのDTOを変数を定義
+            FizzBuzzDto fizzbuzzdto = null;
+            //値を検証する
+            if ((!String.IsNullOrEmpty(number)) && (Validation.IsNumeric(number)))
+            {
+                int inputnumer = 0;
+                inputnumer = int.Parse(number);
+                fizzbuzzdto = ExecFizzBuss(inputnumer);
+            }
+
+            return View(fizzbuzzdto);
+        }
+        /// <summary>
+        /// FizzBuzzを行う。
+        /// <param name="number">フィズバズで検証値</param>
+        /// <return>FizzBuzz情報を返してくれる</return>
+        /// </summary>
+        public FizzBuzzDto ExecFizzBuss(int number)
+        {
+
+            //区切り文字
+            char　delimited = ',';
+            FizzBuzzDto　fizzbuzzdto = null;
+            String　subjectNumber = String.Empty;
+            String  fizzbuzzResults = String.Empty;
+            for (int i = 1; i <= number; i++)
+            {
+                subjectNumber += i;
+                if (i % 5 == 0 && i % 3 == 0)
+                {
+                    fizzbuzzResults += "FizzBuzz";
+                }
+                else if (i % 3 == 0)
+                {
+                    fizzbuzzResults += "Fizz";
+                }
+                else if (i % 5 == 0)
+                {
+                    fizzbuzzResults += "Buzz";
+                }
+                else
+                {
+                    fizzbuzzResults += i;
+                }
+                subjectNumber  += delimited;
+                fizzbuzzResults += delimited;
+            }
+            //末尾の区切り文字削除
+            fizzbuzzResults = fizzbuzzResults.TrimEnd(delimited);
+            subjectNumber = subjectNumber.TrimEnd(delimited);
+
+            //FizzBuzzの結果をDTOに格納
+            fizzbuzzdto = new FizzBuzzDto();
+            fizzbuzzdto.FizzbuzzResult = fizzbuzzResults;
+            fizzbuzzdto.SubjectNumber　= subjectNumber;
+
+            return fizzbuzzdto;
+        }
+
+    }
+    /// <summary>
+    /// 文字のチェックをしてくれるクラス
+    /// </summary>
+    public class Validation
+    {
+        /// <summary>
+        /// 文字列が数値なのかを検証する
+        ///　<param name="target">
+        ///　検証する文字列 <param>
+        ///　<return>指定した文字列が数字なら、trueで違ったらfalse
+        ///　</return>
+        /// </summary>
+        public static bool IsNumeric(String target)
+        {
+            //結果を格納する変数
+            double dNullable;
+            return double.TryParse(
+                target,
+                System.Globalization.NumberStyles.Any,
+                null,
+                out dNullable
+            );
+        }
+        /// <summary>
+        /// 文字列がNullまたは、空ではないかを検証する
+        ///　<param name="target">
+        ///　検証する文字列 <param>
+        ///　<return>Nullでもなく空でもない時は、true、それ以外は、false
+        ///　</return>
+        /// </summary>
+        public static bool IsEmpty(String target)
+        {
+            //結果を格納する変数
+            bool result;
+            if ((target != null) && (target.Length != 0))
+            {
+                result = true;
+            }
+            else
+            {
+                result = false;
+            }
+            return result;
+        }
+
+    }
+
+}
+
+
+/// MOEL
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace FizzBuzzWebForm.Models
+{
+    public class FizzBuzzDto
+    {
+        //対象文字列
+        private String subjectNumber;
+        //フィズバズの結果を格納
+        private String fizzbuzzResult;
+
+        public String SubjectNumber
+        {
+            get { return subjectNumber; }
+            set { subjectNumber = value; }
+        }
+        public String FizzbuzzResult
+        {
+            get { return fizzbuzzResult; }
+            set { fizzbuzzResult = value; }
+        }
+    }
+}
