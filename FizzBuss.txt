@@ -7,6 +7,7 @@ namespace FizzBuzzWebForm.Controllers
     public class FizzBuzzController : Controller
     {
         // GET: FizzBuzz
+		//
         public ActionResult Index(String value)
         {
             //テストの入力項目ができていないための仮
