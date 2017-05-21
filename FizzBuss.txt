@@ -7,7 +7,11 @@ namespace FizzBuzzWebForm.Controllers
     public class FizzBuzzController : Controller
     {
         // GET: FizzBuzz
+<<<<<<< .merge_file_8UuBsC
 	//AAAAAA
+=======
+		//
+>>>>>>> .merge_file_RYZw4p
         public ActionResult Index(String value)
         {
             //テストの入力項目ができていないための仮
