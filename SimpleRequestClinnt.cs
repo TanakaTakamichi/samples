@@ -6,17 +6,21 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Text;
 using Http.param;
+using System.Web;
 namespace Http
 {
-
-	public class SimpleRequestClinnt
+	
+	public class SimpleRequestClient
 	{
 		private HttpWebRequest httpWebRequst = null;
 
 		public String HttpPostRequst(String url, Object obj, Hashtable headers)
 		{
 
-
+			if (obj == null)
+			{
+				return null;
+			}
 			String json = ConvertToJson(obj);
 			httpWebRequst = (HttpWebRequest)HttpWebRequest.Create(url);
 			httpWebRequst.Method = Param.POST;
@@ -48,15 +52,21 @@ namespace Http
 			String result = String.Empty;
 
 
-
+			if (parameters == null)
+			{
+				return null;
+			}	
 			String urlParameters = CreateParameters(url,parameters);
-			httpWebRequst = (HttpWebRequest)HttpWebRequest.Create(url);
+			httpWebRequst = (HttpWebRequest)HttpWebRequest.Create(urlParameters);
 			httpWebRequst.Method = Param.GET;
+			httpWebRequst.ContentType = "charset=utf-8";
+			/*
 			foreach (DictionaryEntry dictionaryEntryDate in headers)
 			{
 				httpWebRequst.Headers.Add(dictionaryEntryDate.Key.ToString()
 										  , dictionaryEntryDate.Value.ToString());
 			}
+			*/
 			using (var responce = (HttpWebResponse)httpWebRequst.GetResponse())
 			{
 				if (responce.StatusCode != HttpStatusCode.OK)
@@ -72,6 +82,8 @@ namespace Http
 				}
 			}
 
+			//System.Text.Encoding enc = System.Text.Encoding.GetEncoding("shift_jis");
+			//result = HttpUtility.UrlDecode(result,enc);
 			return result;
 		}
 		public String ConvertToJson(Object obj)
@@ -86,8 +98,8 @@ namespace Http
 			String question = "?";
 			String and = "&";
 			String equal = "=";
-			urlParameters += urlParameters + url + question;
-			foreach (DictionaryEntry dictionaryEntry in parameter)
+			//urlParameters += question;
+			foreach (DictionaryEntry dictionaryEntry in parameter) 
 			{
 				if (urlParameters.EndsWith(question))
 				{
